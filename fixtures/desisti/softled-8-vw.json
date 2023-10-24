@@ -1,25 +1,26 @@
 {
   "$schema": "https://raw.githubusercontent.com/OpenLightingProject/open-fixture-library/master/schemas/fixture.json",
-  "name": "SoftLED 4 VW",
-  "shortName": "SLED4VW",
+  "name": "SoftLED 8 VW",
+  "shortName": "SLED8VW",
   "categories": ["Dimmer"],
   "meta": {
     "authors": ["Lukas Runge", "Luke Nelson"],
     "createDate": "2023-10-15",
     "lastModifyDate": "2023-10-15"
   },
+  "comment": "Tunable White from 2800 to 6600 Kelvin",
   "links": {
     "manual": [
-      "https://www.desisti.it/soft-led-4/"
+      "https://www.desisti.it/wp-content/uploads/2018/10/CE-Instruction-Manual-De-Sisti-SOFT-LED-8VW.pdf"
     ],
     "productPage": [
-      "https://www.desisti.it/wp-content/uploads/2018/10/CE-Instruction-Manual-De-Sisti-SOFT-LED-4VW.pdf"
+      "https://www.desisti.it/soft-led-8/"
     ]
   },
   "physical": {
-    "dimensions": [465, 480, 132],
-    "weight": 6.7,
-    "power": 205,
+    "dimensions": [747, 480, 132],
+    "weight": 10,
+    "power": 450,
     "DMXconnector": "5-pin",
     "bulb": {
       "type": "LED"
