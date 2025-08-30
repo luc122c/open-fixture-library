@@ -20,38 +20,48 @@
 }
 </style>
 
-<script>
-import { oneOfTypesProp } from 'vue-ts-types';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-export default {
-  props: {
-    error: oneOfTypesProp([Object, Error]).required,
-  },
-  head() {
-    if (this.error.statusCode !== 404) {
-      console.error(`Nuxt rendering error:`, this.error);
-    }
-
-    const title = this.error.statusCode === 404 ? `Not Found` : `Error`;
-
-    return {
-      title,
-      meta: [
-        {
-          hid: `title`,
-          content: title,
-        },
-      ],
-    };
-  },
-  computed: {
-    errorMessage() {
-      if (this.error.response && this.error.response.data && this.error.response.data.error) {
-        return this.error.response.data.error;
-      }
-
-      return this.error.message;
+// props
+const props = defineProps({
+  error: {
+    type: [Object, Error],
+    required: true,
+    validator: (val) => {
+      // must be an object (including Error) and have a numeric statusCode
+      return val && typeof val === 'object' && 'statusCode' in val && Number.isFinite(val.statusCode);
     },
   },
-};
+});
+
+// meta head (Nuxt 2 with @nuxtjs/composition-api or Nuxt 3 compatibility note below)
+const title = computed(() => (props.error.statusCode === 404 ? 'Not Found' : 'Error'));
+
+// Log non-404 errors once when script runs
+if ((props.error as any).statusCode !== 404) {
+  // eslint-disable-next-line no-console
+  console.error('Nuxt rendering error:', props.error);
+}
+
+// Nuxt 2 + @nuxtjs/composition-api:
+useMeta({
+  title: title.value,
+  meta: [
+    {
+      hid: 'title',
+      content: title.value,
+    },
+  ],
+});
+
+// computed: errorMessage
+const errorMessage = computed(() => {
+  const e: any = props.error;
+  if (e.response && e.response.data && e.response.data.error) {
+    return e.response.data.error;
+  }
+  return e.message;
+});
 </script>
+

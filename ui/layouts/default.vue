@@ -63,51 +63,46 @@
 </style>
 
 
-<script>
+<script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import ClimateStrikeBanner from '../components/ClimateStrikeBanner.vue';
 import HeaderBar from '../components/HeaderBar.vue';
 
-export default {
-  components: {
-    HeaderBar,
-    ClimateStrikeBanner,
-  },
-  data() {
-    return {
-      isBrowser: false,
-      isTouchScreen: false,
-      lastTouchTime: 0,
-    };
-  },
-  mounted() {
-    this.isBrowser = true;
+const isBrowser = ref(false);
+const isTouchScreen = ref(false);
+const lastTouchTime = ref(0);
 
-    // adapted from https://stackoverflow.com/a/30303898/451391
-    document.addEventListener(`touchstart`, this.onTouchStart, true);
-    document.addEventListener(`mousemove`, this.onMouseMove, true);
-  },
-  beforeDestroy() {
-    document.removeEventListener(`touchstart`, this.onTouchStart, true);
-    document.removeEventListener(`mousemove`, this.onMouseMove, true);
-  },
-  methods: {
-    focusContent() {
-      this.$refs.content.focus();
-    },
+// template ref for #content
+const content = ref<HTMLElement | null>(null);
 
-    onMouseMove() {
-      // filter emulated events coming from touch events
-      if (Date.now() - this.lastTouchTime < 500) {
-        return;
-      }
-
-      this.isTouchScreen = false;
-    },
-
-    onTouchStart() {
-      this.isTouchScreen = true;
-      this.lastTouchTime = Date.now();
-    },
-  },
+const focusContent = () => {
+  content.value?.focus();
 };
+
+const onMouseMove = () => {
+  // filter emulated events coming from touch events
+  if (Date.now() - lastTouchTime.value < 500) {
+    return;
+  }
+  isTouchScreen.value = false;
+};
+
+const onTouchStart = () => {
+  isTouchScreen.value = true;
+  lastTouchTime.value = Date.now();
+};
+
+onMounted(() => {
+  isBrowser.value = true;
+
+  // adapted from https:\/\/stackoverflow.com\/a\/30303898\/451391
+  document.addEventListener('touchstart', onTouchStart, true);
+  document.addEventListener('mousemove', onMouseMove, true);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('touchstart', onTouchStart, true);
+  document.removeEventListener('mousemove', onMouseMove, true);
+});
 </script>
+
