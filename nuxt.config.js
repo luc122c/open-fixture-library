@@ -16,13 +16,13 @@ export default {
   telemetry: true,
   srcDir: `./ui/`,
   modules: [
-    [`@nuxtjs/axios`, {
-      browserBaseURL: `/`,
-    }],
-    `nuxt-helmet`,
-    `cookie-universal-nuxt`,
-    `@nuxtjs/robots`,
-    `@nuxtjs/sitemap`,
+    // [`@nuxtjs/axios`, {
+    //   browserBaseURL: `/`,
+    // }],
+    // `nuxt-helmet`,
+    // `cookie-universal-nuxt`,
+    // `@nuxtjs/robots`,
+    // `@nuxtjs/sitemap`,
   ],
   plugins: [
     `~/plugins/global-components.js`,
