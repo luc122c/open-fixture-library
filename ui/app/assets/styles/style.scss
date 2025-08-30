@@ -1,0 +1,696 @@
+@use "./fonts.scss";
+@forward './vars.scss';
+
+@each $theme-name, $theme in $themes {
+  [data-theme="#{$theme-name}"] {
+    @each $color-name, $color in $theme {
+      --theme-#{$color-name}: #{ color-to-rgb-string($color) };
+    }
+  }
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font: 12pt/2 $font-stack-text;
+  color: theme-color(text-primary);
+  overflow-wrap: break-word;
+  background-color: theme-color(page-background);
+  transition: background-color 0.3s, color 0.3s;
+  text-rendering: optimizelegibility;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+// IE9 / IE10 does not do this automatically
+[hidden] {
+  display: none;
+}
+
+h1 {
+  margin: 1.5rem 0;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 2.5rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+h3 {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+h4 {
+  margin: 0.8rem 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+p {
+  margin: 1rem 0;
+}
+
+section {
+  padding-top: 1.2ex;
+}
+
+.centered {
+  text-align: center;
+}
+
+.clearfix {
+  clear: both;
+}
+
+label {
+  max-width: 100%;
+}
+
+.hint {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: theme-color(text-secondary);
+}
+
+template {
+  display: none !important;
+}
+
+#ofl-root.js .no-js {
+  display: none;
+}
+
+#ofl-root.no-js .only-js {
+  display: none;
+}
+
+code {
+  font-family: $font-stack-code;
+  font-weight: 400;
+  color: theme-color(text-secondary);
+}
+
+h1 code,
+h2 code,
+h3 code,
+code.channel-key {
+  margin: 0 1ex;
+}
+
+a {
+  color: theme-color(link);
+  text-decoration: none;
+  fill: theme-color(icon);
+  transition: color 0.1s, fill 0.1s, background-color 0.1s;
+
+  &:hover,
+  &:focus {
+    color: theme-color(link-hover);
+    fill: theme-color(icon-hover);
+  }
+}
+
+textarea {
+  min-height: 4em;
+  resize: vertical;
+}
+
+select {
+  width: 30ex;
+}
+
+input[type="number"] {
+  width: 10ex;
+}
+
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="url"] {
+  width: 40ex;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="url"],
+input[type="number"] {
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 0.4em;
+  font-family: $font-stack-text;
+  font-size: 0.95em;
+  color: theme-color(text-primary);
+  background: theme-color(form-field-background);
+  border: 1px solid theme-color(form-field-border);
+  border-radius: 3px;
+  transition: background-color 0.2s, border-color 0.2s;
+
+  &:focus {
+    border-color: $blue-300;
+  }
+
+  &:disabled {
+    background: $grey-100;
+    opacity: 0.9;
+  }
+
+  &.vf-touched.vf-invalid,
+  &.vf-submitted.vf-invalid,
+  &.vf-touched[class^="vf-invalid-"],
+  .vf-touched.vf-invalid &,
+  .vf-submitted.vf-invalid &,
+  .vf-touched[class^="vf-invalid-"] & {
+    border-color: red;
+    box-shadow: 0 0 4px rgba(255, 0, 0, 40%);
+  }
+}
+
+textarea[readonly] {
+  width: 100%;
+  height: 15em;
+  padding: 1em;
+  overflow: auto;
+  font-family: $font-stack-code;
+  font-size: 0.9em;
+  font-weight: 400;
+  line-height: 1.3;
+  color: theme-color(text-primary);
+  white-space: pre-wrap;
+  resize: none;
+  background: theme-color(header-background);
+  border: none;
+}
+
+.error-message {
+  display: block;
+  color: red;
+
+  & div::before {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin: -2px 1ex 0 0;
+    font-weight: 700;
+    line-height: 1em;
+    vertical-align: middle;
+    color: white;
+    text-align: center;
+    content: "!";
+    background: red;
+    border-radius: 9999px;
+  }
+}
+
+input.addition {
+  margin-left: 1ex;
+}
+
+select.empty {
+  font-style: italic;
+  color: theme-color(text-secondary);
+
+  & > option {
+    font-style: normal;
+    color: theme-color(text-primary);
+  }
+}
+
+input::placeholder {
+  font-style: italic;
+  color: theme-color(text-secondary);
+  opacity: 1; // Firefox sets a default opacity
+}
+
+button,
+a.button {
+  &.primary,
+  &.secondary {
+    display: inline-block;
+    padding: 0.5em 3ex;
+    font-size: 0.9em;
+    font-weight: 700;
+    line-height: 1.4;
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 2px;
+    transition: 0.2s background-color;
+
+    &.inline {
+      padding: 4px 6px;
+      font-size: 0.85em;
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.5;
+    }
+
+    &:not(:disabled):active {
+      position: relative;
+      top: 1px;
+    }
+  }
+
+  &.primary {
+    color: theme-color(button-primary-text);
+    background-color: theme-color(button-primary-background);
+    border-color: theme-color(button-primary-border);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      outline: 0;
+      background-color: theme-color(button-primary-background-hover);
+    }
+  }
+
+  &.secondary {
+    color: theme-color(button-secondary-text);
+    background-color: theme-color(button-secondary-background);
+    border-color: theme-color(button-secondary-border);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      outline: 0;
+      background-color: theme-color(button-secondary-background-hover);
+    }
+  }
+}
+
+.button-bar {
+  margin: 2ex 0 0;
+
+  & button,
+  & .button {
+    margin-top: 1ex;
+    margin-right: 1ex;
+  }
+
+  &.right {
+    text-align: right;
+
+    & button,
+    & .button {
+      margin-right: 0;
+      margin-left: 1ex;
+    }
+  }
+}
+
+@media (max-width: $tablet) {
+  html,
+  body {
+    font-size: 14px;
+  }
+}
+
+.icon-button {
+  $icon-size: 1.4em;
+  $padding: 0.3em;
+
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: #{$icon-size + 2 * $padding};
+  padding: 0 0 0 #{$icon-size + 2 * $padding};
+  overflow: hidden;
+  font-size: 1em;
+  vertical-align: middle;
+  color: theme-color(icon);
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 3px;
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  & > .icon {
+    position: absolute;
+    top: $padding;
+    left: $padding;
+    display: block;
+    width: $icon-size;
+    height: $icon-size;
+    fill: currentcolor;
+  }
+
+  &:not(.close) {
+    background-color: theme-color(button-primary-background, 0%);
+    border-color: theme-color(button-primary-background, 0%);
+
+    @include mobile-hover-emulation((
+      background-color: button-primary-background-hover,
+      color: button-primary-text
+    ));
+
+    &:focus {
+      outline: none;
+      border-color: $blue-300;
+    }
+
+    &:active {
+      color: $primary-text-light;
+      background-color: theme-color(blue-background-active);
+      border-color: rgba($blue-300, 0%);
+    }
+  }
+
+  &.close {
+    background-color: rgba($red-700, 0%);
+    border-color: rgba($red-700, 0%);
+
+    &:focus {
+      color: theme-color(icon);
+      outline: none;
+      border-color: $red-700;
+    }
+
+    &:hover {
+      color: $primary-text-light;
+      background-color: $red-700;
+    }
+
+    &:active {
+      color: $primary-text-light;
+      background-color: $red-300;
+      border-color: rgba($red-700, 0%);
+    }
+  }
+}
+
+.card {
+  $card-spacing: 1rem;
+
+  position: relative;
+  box-sizing: border-box;
+  padding: 1rem;
+  margin-bottom: $card-spacing;
+  text-align: left;
+  background-color: theme-color(card-background);
+  border-radius: 3px;
+  box-shadow: 0 2px 4px theme-color(divider);
+  fill: theme-color(icon);
+  transition: background-color 0.3s;
+
+  & .icon-button.close {
+    float: right;
+  }
+
+  & a.big-button {
+    margin: 1rem -1rem -1rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &.dark {
+    color: $primary-text-light;
+    fill: $icon-light;
+  }
+
+  &.light-green {
+    background: theme-color(light-green-background);
+  }
+
+  &.blue {
+    background: theme-color(blue-background);
+  }
+
+  &.yellow {
+    background-color: theme-color(yellow-background);
+  }
+
+  &.red {
+    background-color: theme-color(red-background);
+  }
+
+  &.orange {
+    background: theme-color(orange-background);
+  }
+
+  &:target {
+    animation-duration: 1.2s;
+    animation-timing-function: ease;
+    animation-delay: 0.5s;
+    animation-fill-mode: backwards;
+
+    @include animation-keyframes {
+      from {
+        background-color: theme-color(blue-highlight);
+      }
+    }
+  }
+
+  .grid-3 > & {
+    @media (min-width: $phone-landscape) {
+      display: inline-block;
+      width: calc((100% - #{$card-spacing}) / 2);
+      vertical-align: top;
+
+      & > h2,
+      & > .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &:nth-child(2n) {
+        margin-left: $card-spacing;
+      }
+    }
+
+    @media (min-width: $tablet) {
+      width: calc((100% - 2 * #{$card-spacing}) / 3);
+
+      &:nth-child(3n+1) {
+        margin-left: 0;
+      }
+
+      &:nth-child(3n+2),
+      &:nth-child(3n) {
+        margin-left: $card-spacing;
+      }
+    }
+  }
+
+  .grid-4 > & {
+    @media (width >= 440px) {
+      display: inline-block;
+      width: calc((100% - #{$card-spacing}) / 2);
+      vertical-align: top;
+
+      & > h2,
+      & > .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &:nth-child(2n) {
+        margin-left: $card-spacing;
+      }
+    }
+
+    @media (width >= 650px) {
+      width: calc((100% - 2 * #{$card-spacing}) / 3);
+
+      &:nth-child(3n+1) {
+        margin-left: 0;
+      }
+
+      &:nth-child(3n+2),
+      &:nth-child(3n) {
+        margin-left: $card-spacing;
+      }
+    }
+
+    @media (width >= 920px) {
+      width: calc((100% - 3 * #{$card-spacing}) / 4);
+
+      &:nth-child(4n+1) {
+        margin-left: 0;
+      }
+
+      &:nth-child(4n+2),
+      &:nth-child(4n+3),
+      &:nth-child(4n) {
+        margin-left: $card-spacing;
+      }
+    }
+  }
+}
+
+.manufacturer-color {
+  border-left: 0.6rem solid transparent;
+}
+
+.list {
+  padding: 0;
+  margin: 0 -1rem;
+
+  &:only-child {
+    margin: -1rem;
+
+    & li:first-child a {
+      margin-top: 0;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+    }
+
+    & li:last-child a {
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+  }
+
+  & > li {
+    list-style: none;
+  }
+
+  & > h2 {
+    padding: 1rem 1rem 0;
+  }
+
+  .name {
+    margin-right: auto;
+  }
+}
+
+.list a,
+a.card.slim {
+  padding: 0.5rem 1rem;
+  margin-top: 1px;
+}
+
+.list,
+.card.slim {
+  a,
+  a .hint {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+
+    &.left {
+      margin-right: 1em;
+    }
+
+    &.right {
+      margin-left: 1em;
+    }
+  }
+}
+
+a.card,
+.link,
+.list a {
+  display: block;
+  color: theme-color(text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s, fill 0.2s;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    background-color: theme-color(hover-background);
+    fill: theme-color(text-primary);
+
+    &.dark {
+      fill: $primary-text-light;
+    }
+
+    &.light-green {
+      background-color: theme-color(light-green-background-hover);
+    }
+
+    &.blue {
+      background-color: theme-color(blue-background-hover);
+    }
+  }
+
+  &:active {
+    background-color: theme-color(active-background);
+
+    &.light-green {
+      background-color: theme-color(light-green-background-active);
+    }
+
+    &.blue {
+      background-color: theme-color(blue-background-active);
+    }
+  }
+}
+
+.card-category,
+.big-button {
+  min-height: 5rem;
+  padding-left: 5rem;
+
+  & > .icon {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  & > h2 {
+    line-height: 3rem;
+  }
+}
+
+.big-button > h2 {
+  font-size: 1.2rem;
+}
+
+// display mode cards in a 2-col layout
+@media (min-width: $tablet) {
+  .fixture-mode {
+    width: calc(50% - 0.5rem);
+
+    &:nth-child(odd) {
+      float: left;
+      clear: left;
+      margin-right: 0.5rem;
+    }
+
+    &:nth-child(even) {
+      float: right;
+      clear: right;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+@media (max-width: $phone) {
+  .list > li > a > .icon {
+    width: 24px;
+    height: 24px;
+
+    &.left {
+      margin-right: 0.6em;
+    }
+
+    &.right {
+      margin-left: 0.6em;
+    }
+  }
+}

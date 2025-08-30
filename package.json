@@ -40,7 +40,6 @@
   },
   "dependencies": {
     "@heise/embetty-server": "^2.0.3",
-    "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/robots": "^5.5.1",
     "@nuxtjs/sitemap": "^7.4.3",
     "@octokit/rest": "~22.0.0",
@@ -52,7 +51,6 @@
     "color-name-list": "^10.28.1",
     "cookie-universal-nuxt": "^2.2.2",
     "cors": "^2.8.5",
-    "embetty-vue": "^2.0.1",
     "express": "^4.21.2",
     "jszip": "^3.10.1",
     "node-env-file": "^0.1.8",
@@ -66,7 +64,6 @@
     "svg-inline-loader": "^0.8.2",
     "uuid": "^10.0.0",
     "vue-form": "^4.10.3",
-    "vue-ts-types": "^1.8.1",
     "vuedraggable": "^2.24.3",
     "xml2js": "^0.6.2",
     "xmlbuilder": "^15.1.1"
