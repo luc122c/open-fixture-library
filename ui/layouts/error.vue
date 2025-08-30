@@ -35,7 +35,6 @@ const props = defineProps({
   },
 });
 
-// meta head (Nuxt 2 with @nuxtjs/composition-api or Nuxt 3 compatibility note below)
 const title = computed(() => (props.error.statusCode === 404 ? 'Not Found' : 'Error'));
 
 // Log non-404 errors once when script runs
@@ -44,8 +43,7 @@ if ((props.error as any).statusCode !== 404) {
   console.error('Nuxt rendering error:', props.error);
 }
 
-// Nuxt 2 + @nuxtjs/composition-api:
-useMeta({
+useHead({
   title: title.value,
   meta: [
     {
