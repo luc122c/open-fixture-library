@@ -1,6 +1,7 @@
 import { fixupPluginRules } from '@eslint/compat';
 import eslintJs from '@eslint/js';
 import eslintMarkdown from '@eslint/markdown';
+import eslintPluginVitest from '@vitest/eslint-plugin';
 import eslintPluginImport from 'eslint-plugin-import';
 import eslintPluginJsdoc from 'eslint-plugin-jsdoc';
 import eslintPluginJsonc from 'eslint-plugin-jsonc';
@@ -485,5 +486,9 @@ export default [
     rules: {
       'jsonc/no-comments': `off`,
     },
+  },
+  {
+    files: [`tests/*.test.js`],
+    ...eslintPluginVitest.configs.recommended,
   },
 ];

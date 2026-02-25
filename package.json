@@ -33,7 +33,7 @@
     "lint:stylelint": "stylelint **/*.scss **/*.vue",
 
     "test": "npm run lint && npm run test:fixtures-valid",
-    "test:dmx-value-scaling": "node tests/dmx-value-scaling.js",
+    "test:dmx-value-scaling": "vitest run tests/dmx-value-scaling.test.js",
     "test:fixtures-valid": "node tests/fixtures-valid.js -a",
     "test:http-status": "NODE_ENV=production node --tls-min-v1.0 tests/http-status.js",
     "test:built-files-committed": "node tests/built-files-committed.js"
@@ -76,6 +76,7 @@
     "@eslint/js": "~9.39.3",
     "@eslint/markdown": "~7.5.1",
     "@stylistic/stylelint-config": "~4.0.0",
+    "@vitest/eslint-plugin": "^1.6.9",
     "broken-link-checker": "^0.7.8",
     "dir-compare": "^5.0.0",
     "disparity": "^3.2.0",
@@ -100,6 +101,7 @@
     "stylelint-config-standard-scss": "~17.0.0",
     "stylelint-order": "~7.0.1",
     "terminate": "^2.8.0",
+    "vitest": "^4.0.18",
     "vue-eslint-parser": "~10.4.0",
     "widdershins": "^4.0.1"
   },
