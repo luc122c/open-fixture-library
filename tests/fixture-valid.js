@@ -489,11 +489,10 @@ export async function checkFixture(manufacturerKey, fixtureKey, fixtureJson, uni
       if (
         channel.capabilities.length === 1 &&
         channel.capabilities[0].type === `ShutterStrobe` &&
-        fixture.mainCategory !== `Strobe`
+        fixture.mainCategory !== `Strobe` &&
+        !channel.capabilities[0].helpWanted?.startsWith(`At which DMX values is strobe disabled? When is the lamp constantly on/off?`)
       ) {
-        const message = `Channel '${channel.key}' only has a single ShutterStrobe capability and the fixture is not a Strobe, so it is not clear when strobe is disabled.`;
-        const hasHelpWanted = Boolean(channel.capabilities[0].helpWanted?.startsWith(`At which DMX values is strobe disabled? When is the lamp constantly on/off?`));
-        result[hasHelpWanted ? `warnings` : `errors`].push(message);
+        result.errors.push(`Channel '${channel.key}' only has a single ShutterStrobe capability and the fixture is not a Strobe, so it is not clear when strobe is disabled.`);
       }
 
       for (let index = 0; index < channel.capabilities.length; index++) {
@@ -721,7 +720,7 @@ export async function checkFixture(manufacturerKey, fixtureKey, fixtureJson, uni
               }
 
               if (wheelNames.length === 1 && wheelNames[0] === capability._channel.name) {
-                result.warnings.push(`${errorPrefix} explicitly references wheel '${wheelNames[0]}', which is the default anyway (through the channel name). Please remove the 'wheel' property.`);
+                result.errors.push(`${errorPrefix} explicitly references wheel '${wheelNames[0]}', which is the default anyway (through the channel name). Please remove the 'wheel' property.`);
               }
             }
             else if (capability.wheels.includes(null)) {
@@ -743,8 +742,8 @@ export async function checkFixture(manufacturerKey, fixtureKey, fixtureJson, uni
               usedWheelSlots.add(`${capability.wheels[0].name} (slot ${index})`);
             }
 
-            if (max - min > 1) {
-              result.warnings.push(`${errorPrefix} references a wheel slot range (${min}…${max}) which is greater than 1.`);
+            if (max - min > 1 && !capability.helpWanted?.endsWith(`can be selected at which DMX values?`)) {
+              result.errors.push(`${errorPrefix} references a wheel slot range (${min}…${max}) which is greater than 1.`);
             }
 
             const minSlotNumber = 1;
@@ -774,8 +773,8 @@ export async function checkFixture(manufacturerKey, fixtureKey, fixtureJson, uni
          */
         function checkPanTiltCapability() {
           const usesPercentageAngle = capability.angle[0].unit === `%`;
-          if (usesPercentageAngle) {
-            result.warnings.push(`${errorPrefix} defines an imprecise percentaged angle. Please to try find the value in degrees.`);
+          if (usesPercentageAngle && capability.helpWanted !== `Can you provide exact angles?`) {
+            result.errors.push(`${errorPrefix} defines an imprecise percentaged angle. Please try to find the value in degrees.`);
           }
         }
 
